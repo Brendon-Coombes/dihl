@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DIHL.Application.Abstractions\DIHL.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\DIHL.Domain\DIHL.Domain.csproj" />
+    <ProjectReference Include="..\DIHL.DTOs\DIHL.DTOs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ExceptionHandling\" />
+  </ItemGroup>
+
+</Project>

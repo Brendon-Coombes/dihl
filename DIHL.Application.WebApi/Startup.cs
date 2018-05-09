@@ -1,0 +1,92 @@
+using Autofac;
+using DIHL.Application.WebApi.Config;
+using DIHL.Repository.Sql.Database;
+using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Sinks.RollingFileAlternate;
+
+namespace DIHL.Application.WebApi
+{
+    public class Startup
+    {
+        private IConfigurationRoot Configuration { get; }
+
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+
+            services.Configure<SerilogConfig>(Configuration.GetSection("SerilogConfig"));
+
+            services.AddDbContext<DihlDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
+
+                //You can also use in memory DB
+                //options.UseInMemoryDatabase("Database");
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<SerilogConfig> serilogConfig, TelemetryClient telemetryClient)
+        {
+            ConfigureSerilog(serilogConfig.Value, telemetryClient);
+
+            if (env.IsDevelopment())
+            {
+                app.UseCors(builder =>
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseMvc();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new AutofacModule());
+        }
+
+        private void ConfigureSerilog(SerilogConfig serilogConfig, TelemetryClient telemetryClient)
+        {
+            var logConfig = new LoggerConfiguration()
+                .MinimumLevel.Is(serilogConfig.MinimumLevel)
+                .Enrich.FromLogContext();
+
+            if (serilogConfig.RollingFile.IsEnabled)
+            {
+                logConfig.WriteTo.RollingFileAlternate(serilogConfig.RollingFile.Folder, serilogConfig.RollingFile.Level);
+            }
+            if (serilogConfig.Trace.IsEnabled)
+            {
+                logConfig.WriteTo.Trace(serilogConfig.Trace.Level);
+            }
+            if (serilogConfig.AppInsights.IsEnabled)
+            {
+                logConfig.WriteTo.ApplicationInsightsTraces(telemetryClient, serilogConfig.AppInsights.Level);
+            }
+
+            Log.Logger = logConfig.CreateLogger();
+            Log.Logger.Information("Logging Initialised");
+        }
+    }
+}

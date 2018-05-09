@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\**" />
+    <Compile Remove="ValueObjects\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <EmbeddedResource Remove="ValueObjects\**" />
+    <None Remove="Entities\**" />
+    <None Remove="ValueObjects\**" />
+  </ItemGroup>
+
+</Project>
