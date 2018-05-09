@@ -21,34 +21,31 @@ namespace DIHL.Application.Core.Services
     public class SeasonService : ServiceBase, ISeasonService
     {
         private readonly ISeasonRepository _seasonRepository;
-        private readonly LeagueFactory _leagueFactory;
-        private readonly LeagueDTOMapper _leagueMapper;
+        private readonly SeasonFactory _seasonFactory;
+        private readonly SeasonDTOMapper _seasonMapper;
         private readonly ITelemetryEventService _telemetry;
 
         private readonly ILogger _log = Log.ForContext<LeagueService>();
 
-        public LeagueService(IActionHandler handler, ILeagueRepository leagueRepository, LeagueDTOMapper leagueMapper, LeagueFactory leagueFactory, ITelemetryEventService telemetry)
+        public SeasonService(IActionHandler handler, ISeasonRepository seasonRepository, SeasonDTOMapper seasonMapper, SeasonFactory seasonFactory, ITelemetryEventService telemetry)
             : base(handler)
         {
-            _leagueRepository = leagueRepository;
-            _leagueMapper = leagueMapper;
-            _leagueFactory = leagueFactory;
+            _seasonRepository = seasonRepository;
+            _seasonMapper = seasonMapper;
+            _seasonFactory = seasonFactory;
             _telemetry = telemetry;
         }
 
         /// <summary>
-        /// Gets a list of leagues.
+        /// Gets a list of seasons.
         /// </summary>
-        /// <returns>List of leagues</returns>
-        public async Task<IList<LeagueDTO>> List()
+        /// <returns>List of seasons</returns>
+        public async Task<IList<SeasonDTO>> List()
         {
             var result = await this.Handler.Execute(_log, async () =>
             {
-                _telemetry.StartListLeaguesTimer();
-                IList<League> leagues = await _leagueRepository.List();
-
-                var leagueList = leagues.Select(d => _leagueMapper.ToDto(d)).ToList();
-                _telemetry.CompleteListLeaguesTimer(leagueList.Count);
+                IList<Season> leagues = await _seasonRepository.List();
+                var leagueList = leagues.Select(d => _seasonMapper.ToDto(d)).ToList();
 
                 return leagueList;
             });
@@ -60,75 +57,75 @@ namespace DIHL.Application.Core.Services
         /// Gets a single record matching the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>The matching league</returns>
-        public async Task<LeagueDTO> Get(Guid id)
+        /// <returns>The matching season</returns>
+        public async Task<SeasonDTO> Get(Guid id)
         {
             var result = await this.Handler.Execute(_log, async () =>
             {
-                var repositoryResult = await _leagueRepository.Get(id);
+                var repositoryResult = await _seasonRepository.Get(id);
                 if (repositoryResult == null)
                 {
                     throw new RecordNotFoundException("League", id);
                 }
 
-                return _leagueMapper.ToDto(repositoryResult);
+                return _seasonMapper.ToDto(repositoryResult);
             });
 
             return result;
         }
 
         /// <summary>
-        /// Creates the specified league.
+        /// Creates the specified season.
         /// </summary>
-        /// <param name="leagueDto">The entity.</param>
-        /// <returns>The league that was created.</returns>
-        public async Task<LeagueDTO> Create(LeagueDTO leagueDto)
+        /// <param name="seasonDto">The entity.</param>
+        /// <returns>The season that was created.</returns>
+        public async Task<SeasonDTO> Create(SeasonDTO seasonDto)
         {
             var result = await this.Handler.Execute(_log, async () =>
             {
-                League league = _leagueFactory.CreateDomainObject(leagueDto);
+                Season league = _seasonFactory.CreateDomainObject(seasonDto);
                 league.Validate();
 
-                league = await _leagueRepository.Create(league);
-                return _leagueMapper.ToDto(league);
+                league = await _seasonRepository.Create(league);
+                return _seasonMapper.ToDto(league);
             });
 
             return result;
         }
 
         /// <summary>
-        /// Updates the specified league.
+        /// Updates the specified season.
         /// </summary>
-        /// <param name="leagueDto">The value.</param>
-        /// <returns>The league that was updated.</returns>
-        public async Task<LeagueDTO> Update(LeagueDTO leagueDto)
+        /// <param name="seasonDto">The value.</param>
+        /// <returns>The season that was updated.</returns>
+        public async Task<SeasonDTO> Update(SeasonDTO seasonDto)
         {
             var result = await this.Handler.Execute(_log, async () =>
             {
-                League league = _leagueFactory.CreateDomainObject(leagueDto);
-                league.Validate();
+                Season season = _seasonFactory.CreateDomainObject(seasonDto);
+                season.Validate();
 
-                league = await _leagueRepository.Update(league);
-                return _leagueMapper.ToDto(league);
+                season = await _seasonRepository.Update(season);
+                return _seasonMapper.ToDto(season);
             });
 
             return result;
         }
 
         /// <summary>
-        /// Upserts the specified league. If an ID value is not defined a create operation is performed, otherwise an Update is attempted.
+        /// Upserts the specified season. If an ID value is not defined a create operation is performed, otherwise an Update is attempted.
         /// </summary>
-        /// <param name="leagueDto">The entity.</param>
-        /// <returns>The league that was created or updated.</returns>
-        public async Task<LeagueDTO> Upsert(LeagueDTO leagueDto)
+        /// <param name="seasonDto">The entity.</param>
+        /// <returns>The season that was created or updated.</returns>
+        public async Task<SeasonDTO> Upsert(SeasonDTO seasonDto)
         {
             var result = await this.Handler.Execute(_log, async () =>
             {
-                League league = _leagueFactory.CreateDomainObject(leagueDto);
-                league.Validate();
+                Season season = _seasonFactory.CreateDomainObject(seasonDto);
+                season.Validate();
 
-                league = await _leagueRepository.Upsert(league);
-                return _leagueMapper.ToDto(league);
+                season = await _seasonRepository.Upsert(season);
+                return _seasonMapper.ToDto(season);
             });
 
             return result;
@@ -141,7 +138,7 @@ namespace DIHL.Application.Core.Services
         /// <returns>true if successful</returns>
         public async Task<bool> Delete(Guid id)
         {
-            return await this.Handler.Execute(_log, async () => await _leagueRepository.Delete(id));
+            return await this.Handler.Execute(_log, async () => await _seasonRepository.Delete(id));
         }
     }
 }

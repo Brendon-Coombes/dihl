@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExceptionHandling\**" />
+    <EmbeddedResource Remove="ExceptionHandling\**" />
+    <None Remove="ExceptionHandling\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Serilog" Version="2.6.0" />
   </ItemGroup>
 
@@ -12,10 +18,6 @@
     <ProjectReference Include="..\DIHL.Application.Abstractions\DIHL.Application.Abstractions.csproj" />
     <ProjectReference Include="..\DIHL.Domain\DIHL.Domain.csproj" />
     <ProjectReference Include="..\DIHL.DTOs\DIHL.DTOs.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ExceptionHandling\" />
   </ItemGroup>
 
 </Project>
