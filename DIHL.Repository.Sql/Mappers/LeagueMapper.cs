@@ -1,6 +1,5 @@
-using DIHL.Domain.Aggregates;
+using DIHL.Domain.Models;
 using DIHL.Repository.Sql.Models;
-using DIHL.Repository.Sql.Repositories;
 
 namespace DIHL.Repository.Sql.Mappers
 {

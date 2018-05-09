@@ -33,4 +33,8 @@
     <ProjectReference Include="..\DIHL.Repository.Sql\DIHL.Repository.Sql.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>

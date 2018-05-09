@@ -1,4 +1,4 @@
-namespace DIHL.Repository.Sql.Repositories
+namespace DIHL.Repository.Sql.Mappers
 {
     public interface IDomainDataMapper<T, TU>
     {

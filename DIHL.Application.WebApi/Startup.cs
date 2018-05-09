@@ -38,9 +38,6 @@ namespace DIHL.Application.WebApi
             services.AddDbContext<DihlDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
-
-                //You can also use in memory DB
-                //options.UseInMemoryDatabase("Database");
             });
         }
 

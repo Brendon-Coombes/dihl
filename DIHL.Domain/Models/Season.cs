@@ -3,7 +3,7 @@ using DIHL.Domain.Enums;
 
 namespace DIHL.Domain.Aggregates
 {
-    public class Season : IAggregateRoot
+    public class Season : IModelRoot
     {
 
         public Season(Guid id, string name, DateTime createdOn, int year, Guid leagueId)

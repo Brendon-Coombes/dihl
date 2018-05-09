@@ -6,6 +6,7 @@ using DIHL.Domain.Aggregates;
 using Serilog;
 using System;
 using System.Linq;
+using DIHL.Repository.Sql.Mappers;
 
 namespace DIHL.Repository.Sql.Repositories
 {

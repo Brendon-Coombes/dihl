@@ -3,7 +3,6 @@ using Autofac.Core;
 using DIHL.Application.Core.Services;
 using DIHL.Application.Core.Utilities;
 using DIHL.Repository.Sql.Repositories;
-using System.Linq;
 using System.Reflection;
 using DIHL.Application.WebApi.Telemetry;
 

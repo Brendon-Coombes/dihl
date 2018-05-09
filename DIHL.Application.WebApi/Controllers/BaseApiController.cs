@@ -1,5 +1,4 @@
 using DIHL.Application.Core.Exceptions;
-using DIHL.Application.Core.Utilities;
 using DIHL.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -54,7 +53,6 @@ namespace DIHL.Application.WebApi.Controllers
             log.Error(ex, errorDto.Message);
 
 #if DEBUG
-            //TODO: make environment/value configurable?
             errorDto.StackTrace = ex.ToString();
 #endif
 

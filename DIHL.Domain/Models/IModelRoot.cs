@@ -2,7 +2,7 @@ using System;
 
 namespace DIHL.Domain.Aggregates
 {
-    public interface IAggregateRoot
+    public interface IModelRoot
     {
         Guid Id { get; }
     }

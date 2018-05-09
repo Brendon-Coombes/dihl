@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DIHL.Repository.Sql.Mappers;
 
 namespace DIHL.Repository.Sql.Repositories
 {
@@ -17,7 +18,7 @@ namespace DIHL.Repository.Sql.Repositories
     /// <typeparam name="T">The root domain object</typeparam>
     /// <typeparam name="TU">The root data model</typeparam>
     public abstract class RepositoryBase<T, TU>
-        where T : IAggregateRoot
+        where T : IModelRoot
         where TU : class, IDataModel
     {
         protected IActionHandler Handler { get; private set; }
