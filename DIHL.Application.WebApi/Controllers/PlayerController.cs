@@ -12,10 +12,12 @@ namespace DIHL.Application.WebApi.Controllers
     [Route("api/Player")]
     public class PlayerController : BaseApiController
     {
+        private readonly IPlayerService _playerService;
         private readonly ILogger _log = Log.ForContext<PlayerController>();
 
-        public PlayerController()
+        public PlayerController(IPlayerService playerService)
         {
+            _playerService = playerService;
         }
 
         /// <summary>
@@ -23,9 +25,11 @@ namespace DIHL.Application.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(List<PlayerDTO>), 200)]
         public async Task<IActionResult> List()
         {
-            return NoContent();
+            IActionResult result = await Execute(_log, async () => await _playerService.List());
+            return result;
         }
 
         /// <summary>
@@ -34,9 +38,11 @@ namespace DIHL.Application.WebApi.Controllers
         /// <param name="id">The player identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PlayerDTO), 200)]
         public async Task<IActionResult> Get(Guid id)
         {
-            return NoContent();
+            IActionResult result = await Execute(_log, async () => await _playerService.Get(id));
+            return result;
         }
 
         /// <summary>
@@ -46,9 +52,11 @@ namespace DIHL.Application.WebApi.Controllers
         /// <param name="value">The entity data.</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]object value)
+        [ProducesResponseType(typeof(PlayerDTO), 200)]
+        public async Task<IActionResult> Post([FromBody]PlayerDTO value)
         {
-            return Unauthorized();
+            IActionResult result = await Execute(_log, async () => await _playerService.Upsert(value));
+            return result;
         }
 
         /// <summary>
@@ -58,9 +66,15 @@ namespace DIHL.Application.WebApi.Controllers
         /// <param name="value">The player data.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody]object value)
+        [ProducesResponseType(typeof(PlayerDTO), 200)]
+        public async Task<IActionResult> Put(Guid id, [FromBody]PlayerDTO value)
         {
-            return Unauthorized();
+            if (id != value.Id)
+            {
+                return this.BadRequest("Posted league Id does not match the request.");
+            }
+            IActionResult result = await Execute(_log, async () => await _playerService.Upsert(value));
+            return result;
         }
 
         /// <summary>
@@ -69,9 +83,11 @@ namespace DIHL.Application.WebApi.Controllers
         /// <param name="id">The player identifier.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(bool), 200)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Unauthorized();
+            IActionResult result = await Execute(_log, async () => await _playerService.Delete(id));
+            return result;
         }
     }
 }

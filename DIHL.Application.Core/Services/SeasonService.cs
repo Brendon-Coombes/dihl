@@ -83,11 +83,11 @@ namespace DIHL.Application.Core.Services
         {
             var result = await this.Handler.Execute(_log, async () =>
             {
-                Season league = _seasonFactory.CreateDomainObject(seasonDto);
-                league.Validate();
+                Season season = _seasonFactory.CreateDomainObject(seasonDto);
+                season.Validate();
 
-                league = await _seasonRepository.Create(league);
-                return _seasonMapper.ToDto(league);
+                season = await _seasonRepository.Create(season);
+                return _seasonMapper.ToDto(season);
             });
 
             return result;

@@ -20,7 +20,7 @@ namespace DIHL.DTOs
         public string Name { get; set; }
 
         /// <summary>
-        /// The season tier
+        /// The league id
         /// </summary>
         public Guid LeagueId{ get; set; }
 
