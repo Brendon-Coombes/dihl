@@ -3,15 +3,15 @@ using DIHL.DTOs;
 
 namespace DIHL.Application.Core.Mappers
 {
-    public class PlayerDTOMapper
+    public class TeamDTOMapper
     {
-        public PlayerDTO ToDto(Player domain)
+        public TeamDTO ToDto(Team domain)
         {
-            return new PlayerDTO()
+            return new TeamDTO
             {
                 Id = domain.Id,
-                FirstName = domain.FirstName,
-                LastName = domain.LastName,
+                Name = domain.Name,
+                LeagueId = domain.LeagueId,
                 CreatedOn = domain.CreatedOn,
             };
         }

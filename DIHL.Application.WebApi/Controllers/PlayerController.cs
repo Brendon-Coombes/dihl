@@ -71,7 +71,7 @@ namespace DIHL.Application.WebApi.Controllers
         {
             if (id != value.Id)
             {
-                return this.BadRequest("Posted league Id does not match the request.");
+                return this.BadRequest("Posted player Id does not match the request.");
             }
             IActionResult result = await Execute(_log, async () => await _playerService.Upsert(value));
             return result;

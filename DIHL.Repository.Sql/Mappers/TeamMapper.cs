@@ -1,25 +1,26 @@
-﻿using DIHL.Domain.Aggregates;
+﻿using System.Security.Cryptography;
+using DIHL.Domain.Aggregates;
+using DIHL.Domain.Models;
 using DIHL.Repository.Sql.Models;
 
 namespace DIHL.Repository.Sql.Mappers
 {
     /// <summary>
-    /// Season Mapper is responsible for mapping the Season Data model to the Season Domain object and vice versa
+    /// Teason Mapper is responsible for mapping the Team Data model to the Teague Domain object and vice versa
     /// </summary>
-    public class SeasonMapper : IDomainDataMapper<Season, SeasonDataModel>
+    public class TeamMapper : IDomainDataMapper<Team, TeamDataModel>
     {
-        public SeasonDataModel ToDataModel(Season domainModel)
+        public TeamDataModel ToDataModel(Team domainModel)
         {
             if (domainModel == null)
             {
                 return null;
             }
 
-            var dto = new SeasonDataModel()
+            var dto = new TeamDataModel()
             {
                 Id = domainModel.Id,
                 Name = domainModel.Name,
-                Year = domainModel.Year,
                 LeagueId = domainModel.LeagueId,
                 CreatedOnUtc = domainModel.CreatedOn
             };
@@ -27,28 +28,27 @@ namespace DIHL.Repository.Sql.Mappers
             return dto;
         }
 
-        public Season ToDomainModel(SeasonDataModel dataModel)
+        public Team ToDomainModel(TeamDataModel dataModel)
         {
             if (dataModel == null)
             {
                 return null;
             }
 
-            var dto = new Season(
+            var dto = new Team(
                 dataModel.Id,
                 dataModel.Name,
-                dataModel.CreatedOnUtc,
-                dataModel.Year,
-                dataModel.LeagueId
+                dataModel.LeagueId,
+                dataModel.CreatedOnUtc
             );
 
             return dto;
         }
 
-        public void UpdateDataModel(SeasonDataModel dataModel, Season domainModel)
+        public void UpdateDataModel(TeamDataModel dataModel, Team domainModel)
         {
             dataModel.Name = domainModel.Name;
-            dataModel.Year = domainModel.Year;
+            dataModel.LeagueId = domainModel.LeagueId;
             dataModel.CreatedOnUtc = domainModel.CreatedOn;
         }
     }
