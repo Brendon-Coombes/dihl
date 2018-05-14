@@ -21,7 +21,7 @@ namespace DIHL.Repository.Sql.Repositories
         /// Creates an instance of <see cref="PlayerRepository"/>
         /// </summary>
         /// <param name="dbContext"></param>
-        /// <param name="leagueMapper"></param>
+        /// <param name="mapper"></param>
         public PlayerRepository(IActionHandler handler, DihlDbContext dbContext, IDomainDataMapper<Player, PlayerDataModel> mapper)
             : base(handler, dbContext, mapper)
         {
