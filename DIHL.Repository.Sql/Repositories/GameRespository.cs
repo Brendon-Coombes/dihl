@@ -15,7 +15,7 @@ namespace DIHL.Repository.Sql.Repositories
     /// </summary>
     /// <seealso cref="DIHL.Repository.Sql.Repositories.RepositoryBase" />
     /// <seealso cref="DIHL.Application.Abstractions.Repositories.IGameRepository" />
-    public class GameRepository : RepositoryBase<Game, GameDataModel>, IGameRepository
+    public class GameRepository : SimpleRepositoryBase<Game, GameDataModel>, IGameRepository
     {
         /// <summary>
         /// Creates an instance of <see cref="GameRepository"/>

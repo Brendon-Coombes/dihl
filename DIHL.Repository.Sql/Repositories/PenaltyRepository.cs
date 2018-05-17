@@ -15,7 +15,7 @@ namespace DIHL.Repository.Sql.Repositories
     /// </summary>
     /// <seealso cref="DIHL.Repository.Sql.Repositories.RepositoryBase" />
     /// <seealso cref="DIHL.Application.Abstractions.Repositories.IPenaltyRepository" />
-    public class PenaltyRepository : RepositoryBase<Penalty, PenaltyDataModel>, IPenaltyRepository
+    public class PenaltyRepository : SimpleRepositoryBase<Penalty, PenaltyDataModel>, IPenaltyRepository
     {
         /// <summary>
         /// Creates an instance of <see cref="PenaltyRepository"/>

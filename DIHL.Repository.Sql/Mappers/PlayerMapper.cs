@@ -1,5 +1,4 @@
 ﻿using System.Security.Cryptography;
-using DIHL.Domain.Aggregates;
 using DIHL.Domain.Models;
 using DIHL.Repository.Sql.Models;
 

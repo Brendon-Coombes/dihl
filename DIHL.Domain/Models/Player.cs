@@ -1,10 +1,8 @@
 using System;
-using DIHL.Domain.Aggregates;
-using DIHL.Domain.Enums;
 
 namespace DIHL.Domain.Models
 {
-    public class Player : IModelRoot
+    public class Player : ISimpleModel
     {
 
         public Player(Guid id, string firstName, string lastName, DateTime createdOn)

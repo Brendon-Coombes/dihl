@@ -1,9 +1,8 @@
 using System;
-using DIHL.Domain.Aggregates;
 
 namespace DIHL.Domain.Models
 {
-    public class Team : IModelRoot
+    public class Team : ISimpleModel
     {
 
         public Team(Guid id, string name, Guid leagueId, DateTime createdOn)

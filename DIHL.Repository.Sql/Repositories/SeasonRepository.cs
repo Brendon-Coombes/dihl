@@ -2,10 +2,10 @@ using DIHL.Application.Abstractions.Repositories;
 using DIHL.Application.Core.Utilities;
 using DIHL.Repository.Sql.Database;
 using DIHL.Repository.Sql.Models;
-using DIHL.Domain.Aggregates;
 using Serilog;
 using System;
 using System.Linq;
+using DIHL.Domain.Models;
 using DIHL.Repository.Sql.Mappers;
 
 namespace DIHL.Repository.Sql.Repositories
@@ -13,9 +13,9 @@ namespace DIHL.Repository.Sql.Repositories
     /// <summary>
     /// The season repository is responsible for operations that act on a season
     /// </summary>
-    /// <seealso cref="DIHL.Repository.Sql.Repositories.RepositoryBase" />
+    /// <seealso cref="SimpleRepositoryBase{T,TU}" />
     /// <seealso cref="DIHL.Application.Abstractions.Repositories.ISeasonRepository" />
-    public class SeasonRepository : RepositoryBase<Season, SeasonDataModel>, ISeasonRepository
+    public class SeasonRepository : SimpleRepositoryBase<Season, SeasonDataModel>, ISeasonRepository
     {
         /// <summary>
         /// Creates an instance of <see cref="SeasonRepository"/>

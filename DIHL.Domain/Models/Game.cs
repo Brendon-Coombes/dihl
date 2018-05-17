@@ -1,10 +1,8 @@
 using System;
-using DIHL.Domain.Aggregates;
-using DIHL.Domain.Enums;
 
 namespace DIHL.Domain.Models
 {
-    public class Game : IModelRoot
+    public class Game : ISimpleModel
     {
         public Game(Guid id, string location, DateTime date, TimeSpan time, Guid homeTeamId, Guid awayTeamId, Guid seasonId, DateTime createdOn)
         {

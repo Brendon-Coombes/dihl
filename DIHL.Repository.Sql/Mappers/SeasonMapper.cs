@@ -1,4 +1,4 @@
-﻿using DIHL.Domain.Aggregates;
+﻿using DIHL.Domain.Models;
 using DIHL.Repository.Sql.Models;
 
 namespace DIHL.Repository.Sql.Mappers

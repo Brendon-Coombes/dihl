@@ -74,6 +74,12 @@ namespace DIHL.Application.WebApi
                     (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
                     (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
 
+            builder.RegisterType<GamePlayedRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
             builder.RegisterType<SettingsRepository>()
 		        .AsImplementedInterfaces()
 		        .WithParameter(new ResolvedParameter(

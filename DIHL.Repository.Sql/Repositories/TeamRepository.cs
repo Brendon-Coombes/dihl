@@ -15,7 +15,7 @@ namespace DIHL.Repository.Sql.Repositories
     /// </summary>
     /// <seealso cref="DIHL.Repository.Sql.Repositories.RepositoryBase" />
     /// <seealso cref="DIHL.Application.Abstractions.Repositories.ITeamRepository" />
-    public class TeamRepository : RepositoryBase<Team, TeamDataModel>, ITeamRepository
+    public class TeamRepository : SimpleRepositoryBase<Team, TeamDataModel>, ITeamRepository
     {
         /// <summary>
         /// Creates an instance of <see cref="TeamRepository"/>

@@ -1,10 +1,9 @@
 using System;
-using DIHL.Domain.Aggregates;
 using DIHL.Domain.Enums;
 
 namespace DIHL.Domain.Models
 {
-    public class Penalty : IModelRoot
+    public class Penalty : ISimpleModel
     {
 
         public Penalty(Guid id, Guid playerId, Guid teamId, Guid gameId, int period, TimeSpan time, int penaltyType, TimeSpan length, bool powerPlaySuccessful, DateTime createdOn)

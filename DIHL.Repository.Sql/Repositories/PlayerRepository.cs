@@ -15,7 +15,7 @@ namespace DIHL.Repository.Sql.Repositories
     /// </summary>
     /// <seealso cref="DIHL.Repository.Sql.Repositories.RepositoryBase" />
     /// <seealso cref="DIHL.Application.Abstractions.Repositories.IPlayerRepository" />
-    public class PlayerRepository : RepositoryBase<Player, PlayerDataModel>, IPlayerRepository
+    public class PlayerRepository : SimpleRepositoryBase<Player, PlayerDataModel>, IPlayerRepository
     {
         /// <summary>
         /// Creates an instance of <see cref="PlayerRepository"/>

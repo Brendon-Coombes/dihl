@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using DIHL.Application.Core.Telemetry;
 using DIHL.Application.Core.Factory;
 using DIHL.Application.Core.Mappers;
-using DIHL.Domain.Aggregates;
 using DIHL.Domain.Models;
 
 namespace DIHL.Application.Core.Services
