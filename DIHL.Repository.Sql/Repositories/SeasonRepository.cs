@@ -20,8 +20,9 @@ namespace DIHL.Repository.Sql.Repositories
         /// <summary>
         /// Creates an instance of <see cref="SeasonRepository"/>
         /// </summary>
+        /// <param name="handler"></param>
         /// <param name="dbContext"></param>
-        /// <param name="seasonMapper"></param>
+        /// <param name="mapper"></param>
         public SeasonRepository(IActionHandler handler, DihlDbContext dbContext, IDomainDataMapper<Season, SeasonDataModel> mapper)
             : base(handler, dbContext, mapper)
         {

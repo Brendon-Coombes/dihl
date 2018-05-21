@@ -1,9 +1,22 @@
-﻿using System;
+using System;
 
-namespace DIHL.Repository.Sql.Models
+namespace DIHL.Domain.Models
 {
-    public class GameGoalieStatisticDataModel : IDataModel
+    public class GameGoalieStatistic : ISimpleModel
     {
+        public GameGoalieStatistic(Guid id, Guid gameId, Guid playerId, Guid teamId, int shotsAgainst, int goalsAllowed, int saves, int result, DateTime createdOn)
+        {
+            Id = id;
+            GameId = gameId;
+            PlayerId = playerId;
+            TeamId = teamId;
+            ShotsAgainst = shotsAgainst;
+            GoalsAllowed = goalsAllowed;
+            Saves = saves;
+            Result = result;
+            CreatedOn = createdOn;
+        }
+
         /// <summary>
         /// The unique identifier for the league
         /// </summary>
@@ -47,21 +60,11 @@ namespace DIHL.Repository.Sql.Models
         /// <summary>
         /// The game goalie statistic created on date
         /// </summary>
-        public DateTime CreatedOnUtc { get; set; }
+        public DateTime CreatedOn { get; set; }
 
-        /// <summary>
-        /// The game these statistics are for
-        /// </summary>
-        public GameDataModel Game { get; set; }
-
-        /// <summary>
-        /// The player these statistics are for
-        /// </summary>
-        public PlayerDataModel Player { get; set; }
-
-        /// <summary>
-        /// The team that these statistics are for
-        /// </summary>
-        public TeamDataModel Team { get; set; }
+        public bool Validate()
+        {
+            return true;
+        }
     }
 }

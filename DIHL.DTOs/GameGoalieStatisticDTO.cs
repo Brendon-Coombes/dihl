@@ -1,8 +1,12 @@
-﻿using System;
+using System;
+using DIHL.Domain.Enums;
 
-namespace DIHL.Repository.Sql.Models
+namespace DIHL.DTOs
 {
-    public class GameGoalieStatisticDataModel : IDataModel
+    /// <summary>
+    /// Represents an game data set
+    /// </summary>
+    public class GameGoalieStatisticDTO
     {
         /// <summary>
         /// The unique identifier for the league
@@ -49,19 +53,5 @@ namespace DIHL.Repository.Sql.Models
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
 
-        /// <summary>
-        /// The game these statistics are for
-        /// </summary>
-        public GameDataModel Game { get; set; }
-
-        /// <summary>
-        /// The player these statistics are for
-        /// </summary>
-        public PlayerDataModel Player { get; set; }
-
-        /// <summary>
-        /// The team that these statistics are for
-        /// </summary>
-        public TeamDataModel Team { get; set; }
     }
 }
