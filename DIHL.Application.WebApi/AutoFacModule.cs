@@ -50,6 +50,42 @@ namespace DIHL.Application.WebApi
                     (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
                     (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
 
+            builder.RegisterType<PlayerRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
+            builder.RegisterType<TeamRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
+            builder.RegisterType<PenaltyRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
+            builder.RegisterType<GameRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
+            builder.RegisterType<GamePlayedRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
+            builder.RegisterType<GameGoalieStatisticRepository>()
+                .AsImplementedInterfaces()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IActionHandler),
+                    (pi, ctx) => ctx.ResolveKeyed<IActionHandler>("SQL")));
+
             builder.RegisterType<SettingsRepository>()
 		        .AsImplementedInterfaces()
 		        .WithParameter(new ResolvedParameter(

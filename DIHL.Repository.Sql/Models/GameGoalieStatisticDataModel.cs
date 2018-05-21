@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DIHL.Repository.Sql.Models
 {
@@ -50,11 +48,6 @@ namespace DIHL.Repository.Sql.Models
         /// The game goalie statistic created on date
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
-
-        /// <summary>
-        /// The tier of this league
-        /// </summary>
-        public int Tier { get; set; }
 
         /// <summary>
         /// The game these statistics are for

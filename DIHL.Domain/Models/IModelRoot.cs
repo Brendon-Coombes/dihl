@@ -1,9 +1,6 @@
-using System;
-
-namespace DIHL.Domain.Aggregates
+namespace DIHL.Domain.Models
 {
     public interface IModelRoot
     {
-        Guid Id { get; }
     }
 }

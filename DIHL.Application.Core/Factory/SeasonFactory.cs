@@ -1,5 +1,4 @@
-using DIHL.Domain;
-using DIHL.Domain.Aggregates;
+using DIHL.Domain.Models;
 using DIHL.DTOs;
 
 namespace DIHL.Application.Core.Factory

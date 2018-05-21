@@ -1,9 +1,8 @@
 using System;
-using DIHL.Domain.Enums;
 
-namespace DIHL.Domain.Aggregates
+namespace DIHL.Domain.Models
 {
-    public class Season : IModelRoot
+    public class Season : ISimpleModel
     {
 
         public Season(Guid id, string name, DateTime createdOn, int year, Guid leagueId)

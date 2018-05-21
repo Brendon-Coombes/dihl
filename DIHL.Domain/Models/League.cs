@@ -1,10 +1,9 @@
 using System;
-using DIHL.Domain.Aggregates;
 using DIHL.Domain.Enums;
 
 namespace DIHL.Domain.Models
 {
-    public class League : IModelRoot
+    public class League : ISimpleModel
     {
 
         public League(Guid id, string name, DateTime createdOn, int tier)

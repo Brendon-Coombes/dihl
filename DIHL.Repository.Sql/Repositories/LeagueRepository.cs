@@ -2,7 +2,6 @@ using DIHL.Application.Abstractions.Repositories;
 using DIHL.Application.Core.Utilities;
 using DIHL.Repository.Sql.Database;
 using DIHL.Repository.Sql.Models;
-using DIHL.Domain.Aggregates;
 using Serilog;
 using System;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace DIHL.Repository.Sql.Repositories
     /// </summary>
     /// <seealso cref="DIHL.Repository.Sql.Repositories.RepositoryBase" />
     /// <seealso cref="DIHL.Application.Abstractions.Repositories.ILeagueRepository" />
-    public class LeagueRepository : RepositoryBase<League, LeagueDataModel>, ILeagueRepository
+    public class LeagueRepository : SimpleRepositoryBase<League, LeagueDataModel>, ILeagueRepository
     {
         /// <summary>
         /// Creates an instance of <see cref="LeagueRepository"/>

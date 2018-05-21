@@ -1,10 +1,10 @@
-﻿using DIHL.Domain.Aggregates;
+﻿using DIHL.Domain.Models;
 using DIHL.Repository.Sql.Models;
 
 namespace DIHL.Repository.Sql.Mappers
 {
     /// <summary>
-    /// Season Mapper is responsible for mapping the League Data model to the League Domain object and vice versa
+    /// Season Mapper is responsible for mapping the Season Data model to the Season Domain object and vice versa
     /// </summary>
     public class SeasonMapper : IDomainDataMapper<Season, SeasonDataModel>
     {

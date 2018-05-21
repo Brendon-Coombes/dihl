@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DIHL.Domain.Aggregates;
+﻿using DIHL.Domain.Models;
 using DIHL.DTOs;
 
 namespace DIHL.Application.Core.Mappers
