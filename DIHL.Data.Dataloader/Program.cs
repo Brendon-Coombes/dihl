@@ -1,0 +1,15 @@
+﻿using System;
+using DIHL.Data.Dataloader.WebDriver;
+
+namespace DIHL.Data.Dataloader
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Running Dataloader");
+            ChromeDriver driver = new ChromeDriver();
+            driver.Browse("https://google.com");
+        }
+    }
+}
