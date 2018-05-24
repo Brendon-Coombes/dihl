@@ -9,7 +9,8 @@ namespace DIHL.Data.Dataloader
         {
             Console.WriteLine("Running Dataloader");
             ChromeDriver driver = new ChromeDriver();
-            driver.Browse("https://google.com");
+            driver.Test("https://www.mystatsonline.com/hockey/visitor/league/home/home_hockey.aspx?IDLeague=7155");
         }
+
     }
 }
