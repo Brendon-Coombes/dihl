@@ -1,4 +1,5 @@
 ﻿using System;
+using DIHL.Data.Dataloader.Infrastructure;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -17,7 +18,7 @@ namespace DIHL.Data.Dataloader.WebDriver
         public void Test(string url)
         {
             _driver.Url = url;
-            WaitUntilElementClickable(By.Id("maincontent_msoGvStandings_rptStandings_gvStandings_0_wrapper"));
+            _driver.WaitUntilElementClickable(By.Id("maincontent_msoGvStandings_rptStandings_gvStandings_0_wrapper"));
             IWebElement element = _driver.FindElement(By.Id("maintitle_ddlSeason"));
             element.Click();
             element.SendKeys(Keys.Down);
@@ -29,21 +30,6 @@ namespace DIHL.Data.Dataloader.WebDriver
         {
             _driver.Close();
             _driver?.Dispose();
-        }
-
-        //this will search for the element until a timeout is reached
-        public IWebElement WaitUntilElementClickable(By elementLocator, int timeout = 10)
-        {
-            try
-            {
-                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeout));
-                return wait.Until(ExpectedConditions.ElementToBeClickable(elementLocator));
-            }
-            catch (NoSuchElementException)
-            {
-                Console.WriteLine("Element with locator: '" + elementLocator + "' was not found in current context page.");
-                throw;
-            }
-        }
+        }        
     }
 }

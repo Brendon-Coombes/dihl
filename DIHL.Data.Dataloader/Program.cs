@@ -1,5 +1,7 @@
 ﻿using System;
-using DIHL.Data.Dataloader.WebDriver;
+using DIHL.Data.Dataloader.Infrastructure;
+using DIHL.Data.Dataloader.Page;
+using OpenQA.Selenium;
 
 namespace DIHL.Data.Dataloader
 {
@@ -8,8 +10,11 @@ namespace DIHL.Data.Dataloader
         static void Main(string[] args)
         {
             Console.WriteLine("Running Dataloader");
-            ChromeDriver driver = new ChromeDriver();
-            driver.Test("https://www.mystatsonline.com/hockey/visitor/league/home/home_hockey.aspx?IDLeague=7155");
+            IWebDriver driver = new OpenQA.Selenium.Chrome.ChromeDriver("..\\..\\..\\Tools");
+            //driver.Test("https://www.mystatsonline.com/hockey/visitor/league/home/home_hockey.aspx?IDLeague=7155");
+
+            ScheduleAndScoresPage page = new ScheduleAndScoresPage(driver, Season.WinterDIHL2016);
+            page.Navigate();        
         }
 
     }
