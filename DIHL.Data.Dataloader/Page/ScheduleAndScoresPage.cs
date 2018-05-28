@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using DIHL.Data.Dataloader.Infrastructure;
 using DIHL.Data.Dataloader.WebDriver;
@@ -76,5 +77,22 @@ namespace DIHL.Data.Dataloader.Page
             seasonDropdown.SelectByValue(((int)_season).ToString());
             return _webDriver.WaitUntilElementClickable(By.Id(_monthElementId));
         }
+
+        public IList<string> GetGameIds()
+        {
+            var linkAttributes = _webDriver.FindElements(By.CssSelector("#maincontent_gvGameList tbody tr td span a"));
+            var linkContent = linkAttributes.Select(link => link.GetAttribute("href"));
+            List<string> gameIds = new List<string>();
+            foreach (var content in linkContent)
+            {
+                int from = content.IndexOf("(") + "(".Length;
+                int to = content.LastIndexOf(")");
+
+                string gameId = content.Substring(from, to - from);
+                gameIds.Add(gameId);
+            }
+
+            return gameIds;
+        }
     }
-}
+}    
