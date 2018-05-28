@@ -14,7 +14,8 @@ namespace DIHL.Data.Dataloader
             //driver.Test("https://www.mystatsonline.com/hockey/visitor/league/home/home_hockey.aspx?IDLeague=7155");
 
             ScheduleAndScoresPage page = new ScheduleAndScoresPage(driver, Season.WinterDIHL2016);
-            page.Navigate();        
+            page.Navigate();
+            var gameIds = page.GetGameIds();
         }
 
     }
