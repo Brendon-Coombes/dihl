@@ -11,6 +11,7 @@ namespace DIHL.Application.Core.Mappers
             {
                 Id = domain.Id,
                 Name = domain.Name,
+                ShortCode = domain.ShortCode,
                 LeagueId = domain.LeagueId,
                 CreatedOn = domain.CreatedOn,
             };

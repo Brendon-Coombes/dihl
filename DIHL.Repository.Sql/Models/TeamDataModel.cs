@@ -18,6 +18,11 @@ namespace DIHL.Repository.Sql.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// The team shortcode
+        /// </summary>
+        public string ShortCode { get; set; }
+
+        /// <summary>
         /// The Id of the League this team belongs to
         /// </summary>
         public Guid LeagueId { get; set; }

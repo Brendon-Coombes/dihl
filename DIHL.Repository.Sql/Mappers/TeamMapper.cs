@@ -36,6 +36,7 @@ namespace DIHL.Repository.Sql.Mappers
             var dto = new Team(
                 dataModel.Id,
                 dataModel.Name,
+                dataModel.ShortCode,
                 dataModel.LeagueId,
                 dataModel.CreatedOnUtc
             );

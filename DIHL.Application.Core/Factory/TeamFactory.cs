@@ -7,7 +7,7 @@ namespace DIHL.Application.Core.Factory
     {
         public Team CreateDomainObject(TeamDTO dto)
         {
-            return new Team(dto.Id, dto.Name, dto.LeagueId, dto.CreatedOn);
+            return new Team(dto.Id, dto.Name, dto.ShortCode, dto.LeagueId, dto.CreatedOn);
         }
     }
 }
