@@ -20,5 +20,19 @@ namespace DIHL.Data.Dataloader.Infrastructure
                 throw;
             }
         }
+
+        public static IWebElement WaitUntilElementVisible(this IWebDriver webDriver, By elementLocator, int timeout = 3)
+        {
+            try
+            {
+                var wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(timeout));
+                return wait.Until(ExpectedConditions.ElementIsVisible(elementLocator));
+            }
+            catch (NoSuchElementException)
+            {
+                Console.WriteLine("Element with locator: '" + elementLocator + "' was not found in current context page.");
+                throw;
+            }
+        }
     }
 }
