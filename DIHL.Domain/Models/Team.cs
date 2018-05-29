@@ -5,10 +5,11 @@ namespace DIHL.Domain.Models
     public class Team : ISimpleModel
     {
 
-        public Team(Guid id, string name, Guid leagueId, DateTime createdOn)
+        public Team(Guid id, string name, string shortCode, Guid leagueId, DateTime createdOn)
         {
             Id = id;
             Name = name;
+            ShortCode = shortCode;
             LeagueId = leagueId;
             CreatedOn = createdOn;
         }
@@ -22,6 +23,11 @@ namespace DIHL.Domain.Models
         /// The team name
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The team short code
+        /// </summary>
+        public string ShortCode { get; set; }
 
         /// <summary>
         /// The league id

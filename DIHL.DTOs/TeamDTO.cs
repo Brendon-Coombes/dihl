@@ -18,6 +18,11 @@ namespace DIHL.DTOs
         public string Name { get; set; }
 
         /// <summary>
+        /// The team short code
+        /// </summary>
+        public string ShortCode { get; set; }
+
+        /// <summary>
         /// The team's league Id
         /// </summary>
         public Guid LeagueId { get; set; }
