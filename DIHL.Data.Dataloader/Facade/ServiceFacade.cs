@@ -52,6 +52,7 @@ namespace DIHL.Data.Dataloader.Facade
             await SaveGamesPlayed(gameInfo.AwayRoster, awayTeam.Id, game.Id);
             await SaveGamesPlayed(gameInfo.HomeRoster, homeTeam.Id, game.Id);
             await SavePenalties(gameInfo.GamePenalties, teams, game.Id);
+            await SaveGoals(gameInfo.GameGoals, teams, game.Id);
         }
 
         private async Task<GameDTO> SaveGame(GamePageInformation gameInfo, TeamDTO awayTeam, TeamDTO homeTeam, SeasonDTO season)
@@ -205,6 +206,65 @@ namespace DIHL.Data.Dataloader.Facade
             }
 
             return type;
+        }
+
+        private async Task SaveGoals(IList<GamePagePoint> points, IList<TeamDTO> teams, Guid gameId)
+        {
+            foreach (var point in points)
+            {
+                var team = teams.First(t => t.ShortCode.ToUpper() == point.TeamShortCode.ToUpper());
+
+                GameSkaterStatisticDTO statistic = new GameSkaterStatisticDTO
+                {
+                    GameId = gameId,
+                    Period = point.Period,
+                    ScoreType = ScoreType.EvenStrength,
+                    TeamId = team.Id,
+                    Time = point.Time ?? TimeSpan.FromSeconds(0),
+                    CreatedOnUtc = DateTime.Now
+                };
+
+                await ParsePointPlayerString(point.PointScorers, statistic);
+
+                await _gameSkaterStatisticService.Upsert(statistic);
+            }
+
+        }
+
+        private async Task ParsePointPlayerString(string pointScorers, GameSkaterStatisticDTO statistic)
+        {
+            //Remove brackets from assist players
+            pointScorers = pointScorers.Replace("(", ",").Replace(")", "");
+
+            //Split the goal scorer and primary assist players up.
+            var splitScorers = pointScorers.Split(",");
+            var grouped = splitScorers
+                .Select((a, i) => new { Scorer = a, Index = i })
+                .GroupBy(p => p.Index / 2);
+
+            List<string> splitScorersInOrder = grouped
+                .Select(g => string.Join(",", g.Select(p => p.Scorer.Trim())))
+                .ToList();
+
+            var goalScorer = await GetOrCreatePlayer(splitScorersInOrder[0]);
+
+            PlayerDTO primaryAssist = null;
+            PlayerDTO secondaryAssist = null;
+
+            if (splitScorersInOrder.Count > 1)
+            {
+                primaryAssist = await GetOrCreatePlayer(splitScorersInOrder[1]);
+            }
+
+            if (splitScorersInOrder.Count == 3)
+            {
+                secondaryAssist = await GetOrCreatePlayer(splitScorersInOrder[2]);
+            }
+
+            //Update the stats with the player information
+            statistic.PlayerId = goalScorer.Id;
+            statistic.PrimaryAssistPlayerId = primaryAssist?.Id;
+            statistic.SecondaryAssistPlayerId = secondaryAssist?.Id;
         }
 
         private async Task<PlayerDTO> GetOrCreatePlayer(string playerString)
