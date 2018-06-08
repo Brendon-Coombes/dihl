@@ -11,9 +11,10 @@ using System;
 namespace DIHL.Repository.Sql.Migrations
 {
     [DbContext(typeof(DihlDbContext))]
-    partial class DihlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180608084104_GamePlayers_RemoveManyToMany")]
+    partial class GamePlayers_RemoveManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
