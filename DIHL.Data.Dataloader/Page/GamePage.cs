@@ -176,13 +176,18 @@ namespace DIHL.Data.Dataloader.Page
             foreach (var player in homeGoalies)
             {
                 var columns = player.FindElements(By.CssSelector("td"));
+
                 GamePageGoalieStats goalieStats = new GamePageGoalieStats()
                 {
                     GoalieName = columns[0].Text,
                     ShotsAgainst = int.Parse(columns[1].Text),
                     GoalsAgainst = int.Parse(columns[2].Text),
-                    Saves = int.Parse(columns[3].Text)
-
+                    Saves = int.Parse(columns[3].Text),
+                    Win = int.Parse(columns[7].Text),
+                    Loss = int.Parse(columns[8].Text),
+                    Tie = int.Parse(columns[9].Text),
+                    SOW = int.Parse(columns[11].Text),
+                    SOL = int.Parse(columns[12].Text)
                 };
                 gameInfo.HomeGoalieStats.Add(goalieStats);
                 gameInfo.HomeRoster.Add(goalieStats.GoalieName);

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DIHL.Data.Dataloader.Models;
 using DIHL.Domain.Enums;
@@ -53,6 +52,8 @@ namespace DIHL.Data.Dataloader.Facade
             await SaveGamesPlayed(gameInfo.HomeRoster, homeTeam.Id, game.Id);
             await SavePenalties(gameInfo.GamePenalties, teams, game.Id);
             await SaveGoals(gameInfo.GameGoals, teams, game.Id);
+            await SaveGoalieStatistics(gameInfo.HomeGoalieStats, game.Id, homeTeam.Id);
+            await SaveGoalieStatistics(gameInfo.AwayGoalieStats, game.Id, awayTeam.Id);
         }
 
         private async Task<GameDTO> SaveGame(GamePageInformation gameInfo, TeamDTO awayTeam, TeamDTO homeTeam, SeasonDTO season)
@@ -228,7 +229,28 @@ namespace DIHL.Data.Dataloader.Facade
 
                 await _gameSkaterStatisticService.Upsert(statistic);
             }
+        }
 
+        private async Task SaveGoalieStatistics(IList<GamePageGoalieStats> goalieStatistics, Guid gameId, Guid teamId)
+        {
+            foreach (var statistic in goalieStatistics)
+            {
+                var player = await GetOrCreatePlayer(statistic.GoalieName);
+
+                GameGoalieStatisticDTO goalieStatistic = new GameGoalieStatisticDTO
+                {
+                    GameId = gameId,
+                    GoalsAllowed = statistic.GoalsAgainst,
+                    ShotsAgainst = statistic.ShotsAgainst,
+                    Saves = statistic.Saves,
+                    PlayerId = player.Id,
+                    TeamId = teamId,
+                    Result = GetGoalieResult(statistic),
+                    CreatedOnUtc = DateTime.Now
+                };
+
+                await _gameGoalieStatisticService.Upsert(goalieStatistic);
+            }
         }
 
         private async Task ParsePointPlayerString(string pointScorers, GameSkaterStatisticDTO statistic)
@@ -265,6 +287,28 @@ namespace DIHL.Data.Dataloader.Facade
             statistic.PlayerId = goalScorer.Id;
             statistic.PrimaryAssistPlayerId = primaryAssist?.Id;
             statistic.SecondaryAssistPlayerId = secondaryAssist?.Id;
+        }
+
+        private int GetGoalieResult(GamePageGoalieStats gamePageGoalieStat)
+        {
+            int result = 0;
+
+            if (gamePageGoalieStat.Win == 1)
+                result = 1;
+
+            if (gamePageGoalieStat.Loss == 1)
+                result = 2;
+
+            if (gamePageGoalieStat.Tie == 1)
+                result = 3;
+
+            if (gamePageGoalieStat.SOW == 1)
+                result = 4;
+
+            if (gamePageGoalieStat.SOL == 1)
+                result = 5;
+
+            return result;
         }
 
         private async Task<PlayerDTO> GetOrCreatePlayer(string playerString)

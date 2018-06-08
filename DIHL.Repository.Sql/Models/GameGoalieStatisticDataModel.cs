@@ -40,7 +40,7 @@ namespace DIHL.Repository.Sql.Models
         public int Saves { get; set; }
 
         /// <summary>
-        /// The result (Win, Loss, Draw, OTL, OTW, SOL, SOW)
+        /// The result (Did not start, Win, Loss, Draw, SOL, SOW)
         /// </summary>
         public int Result { get; set; }
 
