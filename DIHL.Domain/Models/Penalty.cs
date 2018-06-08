@@ -14,7 +14,7 @@ namespace DIHL.Domain.Models
             GameId = gameId;
             Period = period;
             Time = time;
-            PenaltyType = (PenaltyType) penaltyType;
+            PenaltyType = penaltyType;
             Length = length;
             PowerPlaySuccessful = powerPlaySuccessful;
             CreatedOn = createdOn;
@@ -53,7 +53,7 @@ namespace DIHL.Domain.Models
         /// <summary>
         /// The type of penalty that was taken (Tripping, Hooking, Holding, Interferance, Roughing...)
         /// </summary>
-        public PenaltyType PenaltyType { get; set; }
+        public int PenaltyType { get; set; }
 
         /// <summary>
         /// The length of the penalty

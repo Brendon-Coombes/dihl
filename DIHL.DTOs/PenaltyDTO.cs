@@ -41,7 +41,7 @@ namespace DIHL.DTOs
         /// <summary>
         /// The type of penalty that was taken (Tripping, Hooking, Holding, Interferance, Roughing...)
         /// </summary>
-        public PenaltyType PenaltyType { get; set; }
+        public int PenaltyType { get; set; }
 
         /// <summary>
         /// The length of the penalty
