@@ -91,7 +91,11 @@ namespace DIHL.Data.Dataloader.Facade
         {
             foreach (var penalty in penalties)
             {
-                var player = await GetOrCreatePlayer(penalty.Player);
+                PlayerDTO player = null;
+                if (!string.IsNullOrEmpty(penalty.Player))
+                {
+                    player = await GetOrCreatePlayer(penalty.Player);
+                }
                 var team = teams.First(t => t.ShortCode.ToUpper() == penalty.TeamShortCode.ToUpper());
 
                 string penaltyType = penalty.PenaltyType;
@@ -113,7 +117,7 @@ namespace DIHL.Data.Dataloader.Facade
                     Time = penalty.Time ?? TimeSpan.FromSeconds(0),
                     Period = penalty.Period,
                     PowerPlaySuccessful = false,
-                    PlayerId = player.Id,
+                    PlayerId = player?.Id,
                     TeamId = team.Id,
                     PenaltyType = GetPenaltyType(penaltyType),
                     CreatedOn = DateTime.Now

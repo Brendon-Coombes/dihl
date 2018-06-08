@@ -6,7 +6,7 @@ namespace DIHL.Domain.Models
     public class Penalty : ISimpleModel
     {
 
-        public Penalty(Guid id, Guid playerId, Guid teamId, Guid gameId, int period, TimeSpan time, int penaltyType, TimeSpan length, bool powerPlaySuccessful, DateTime createdOn)
+        public Penalty(Guid id, Guid? playerId, Guid teamId, Guid gameId, int period, TimeSpan time, int penaltyType, TimeSpan length, bool powerPlaySuccessful, DateTime createdOn)
         {
             Id = id;
             PlayerId = playerId;
@@ -26,9 +26,9 @@ namespace DIHL.Domain.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The Id of the player who took the penalty
+        /// The Id of the player who took the penalty if the penalty is specific to a player
         /// </summary>
-        public Guid PlayerId { get; set; }
+        public Guid? PlayerId { get; set; }
 
         /// <summary>
         /// The Id of the team that was penalised
