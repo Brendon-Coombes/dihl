@@ -37,21 +37,33 @@ namespace DIHL.Data.Dataloader.Facade
 
         public async Task SaveGameInformation(GamePageInformation gameInfo)
         {
+            Console.WriteLine("Retrieving Leagues...");
             var leagues = await _leagueService.List();
             var league = leagues.First(s => s.Name == "DIHL");
 
+            Console.WriteLine("Retrieving Seaons...");
             var seasons = await _seasonService.List();
-            var season = seasons.First(s => s.LeagueId == league.Id && s.Year == 2016);
+            var season = seasons.First(s => s.LeagueId == league.Id && s.Year == 2017);
 
+            Console.WriteLine("Retrieving Teams...");
             var teams = await _teamService.List();
             var homeTeam = teams.First(s => s.Name == gameInfo.HomeTeam && s.LeagueId == league.Id);
             var awayTeam = teams.First(s => s.Name == gameInfo.AwayTeam && s.LeagueId == league.Id);
 
+            Console.WriteLine("Saving Game...");
             var game = await SaveGame(gameInfo, awayTeam, homeTeam, season);
+
+            Console.WriteLine("Saving Games Played...");
             await SaveGamesPlayed(gameInfo.AwayRoster, awayTeam.Id, game.Id);
             await SaveGamesPlayed(gameInfo.HomeRoster, homeTeam.Id, game.Id);
+
+            Console.WriteLine("Saving Penalties...");
             await SavePenalties(gameInfo.GamePenalties, teams, game.Id);
+
+            Console.WriteLine("Saving Goals...");
             await SaveGoals(gameInfo.GameGoals, teams, game.Id);
+
+            Console.WriteLine("Saving Goalie Statistics...");
             await SaveGoalieStatistics(gameInfo.HomeGoalieStats, game.Id, homeTeam.Id);
             await SaveGoalieStatistics(gameInfo.AwayGoalieStats, game.Id, awayTeam.Id);
         }
@@ -260,7 +272,14 @@ namespace DIHL.Data.Dataloader.Facade
         private async Task ParsePointPlayerString(string pointScorers, GameSkaterStatisticDTO statistic)
         {
             //Remove brackets from assist players
-            pointScorers = pointScorers.Replace("(", ",").Replace(")", "");
+            if (pointScorers.StartsWith("("))
+            {
+                pointScorers = pointScorers.Replace("(", "").Replace(")", "");
+            }
+            else
+            {
+                pointScorers = pointScorers.Replace("(", ",").Replace(")", "");
+            }
 
             //Split the goal scorer and primary assist players up.
             var splitScorers = pointScorers.Split(",");

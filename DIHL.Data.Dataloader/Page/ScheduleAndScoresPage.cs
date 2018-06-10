@@ -35,6 +35,7 @@ namespace DIHL.Data.Dataloader.Page
 
         public void Navigate()
         {
+            Console.WriteLine("Navigating to Schedules and Scores Page...");
             //Load the url and wait for it to load, ensure we are looking at the correct season
             _webDriver.Url = "https://www.mystatsonline.com/hockey/visitor/league/schedule_scores/schedule.aspx?IDLeague=7155";            
             var monthElement =_webDriver.WaitUntilElementClickable(By.Id(_monthElementId));
@@ -47,7 +48,7 @@ namespace DIHL.Data.Dataloader.Page
 
             //Wait for the page to reload
             _webDriver.WaitUntilElementClickable(By.Id("maincontent_gvGameList"));
-            Console.WriteLine("Loaded");
+            Console.WriteLine("Schedules and Scores Page Loaded");
         }
 
         private IWebElement EnsureSeason(IWebElement currentMonthElement)
