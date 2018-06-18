@@ -35,7 +35,6 @@ namespace DIHL.Repository.Sql.Models
         public List<GameSkaterStatisticDataModel> SecondaryAssists { get; set; }
         public List<GameGoalieStatisticDataModel> GoalieStatistics { get; set; }
         public List<PenaltyDataModel> Penalites { get; set; }
-        public List<GameDataModel> GamesPlayed { get; set; }
         public List<PlayerTeamDataModel> TeamsPlayedFor { get; set; }
     }
 }

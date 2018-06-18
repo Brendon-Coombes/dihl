@@ -37,8 +37,6 @@ namespace DIHL.Repository.Sql.Migrations
 
                     b.Property<string>("Location");
 
-                    b.Property<Guid?>("PlayerDataModelId");
-
                     b.Property<Guid>("SeasonId");
 
                     b.Property<TimeSpan>("Time");
@@ -48,8 +46,6 @@ namespace DIHL.Repository.Sql.Migrations
                     b.HasIndex("AwayTeamId");
 
                     b.HasIndex("HomeTeamId");
-
-                    b.HasIndex("PlayerDataModelId");
 
                     b.HasIndex("SeasonId");
 
@@ -176,7 +172,7 @@ namespace DIHL.Repository.Sql.Migrations
 
                     b.Property<int>("Period");
 
-                    b.Property<Guid>("PlayerId");
+                    b.Property<Guid?>("PlayerId");
 
                     b.Property<bool>("PowerPlaySuccessful");
 
@@ -303,10 +299,6 @@ namespace DIHL.Repository.Sql.Migrations
                         .HasForeignKey("HomeTeamId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DIHL.Repository.Sql.Models.PlayerDataModel")
-                        .WithMany("GamesPlayed")
-                        .HasForeignKey("PlayerDataModelId");
-
                     b.HasOne("DIHL.Repository.Sql.Models.SeasonDataModel", "Season")
                         .WithMany("Games")
                         .HasForeignKey("SeasonId")
@@ -334,7 +326,7 @@ namespace DIHL.Repository.Sql.Migrations
             modelBuilder.Entity("DIHL.Repository.Sql.Models.GamePlayedDataModel", b =>
                 {
                     b.HasOne("DIHL.Repository.Sql.Models.GameDataModel", "Game")
-                        .WithMany("Players")
+                        .WithMany()
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -384,8 +376,7 @@ namespace DIHL.Repository.Sql.Migrations
 
                     b.HasOne("DIHL.Repository.Sql.Models.PlayerDataModel", "Player")
                         .WithMany("Penalites")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PlayerId");
 
                     b.HasOne("DIHL.Repository.Sql.Models.TeamDataModel", "Team")
                         .WithMany("Penalites")
