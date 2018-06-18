@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Sinks.RollingFileAlternate;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace DIHL.Application.WebApi
 {
@@ -39,11 +40,23 @@ namespace DIHL.Application.WebApi
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "DIHL Stats API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<SerilogConfig> serilogConfig, TelemetryClient telemetryClient)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "DIHL API V1");
+                s.RoutePrefix = string.Empty;
+            });
+
             ConfigureSerilog(serilogConfig.Value, telemetryClient);
 
             if (env.IsDevelopment())
