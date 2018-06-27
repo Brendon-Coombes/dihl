@@ -1,13 +1,17 @@
+using System;
+using System.Text;
 using Autofac;
 using DIHL.Application.WebApi.Config;
 using DIHL.Repository.Sql.Database;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Sinks.RollingFileAlternate;
 using Swashbuckle.AspNetCore.Swagger;
@@ -36,10 +40,28 @@ namespace DIHL.Application.WebApi
 
             services.Configure<SerilogConfig>(Configuration.GetSection("SerilogConfig"));
 
+           
             services.AddDbContext<DihlDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
             });
+
+            //https://github.com/aspnet/Identity/issues/1364
+            services.AddIdentity<IdentityUser<Guid>, IdentityRole>()
+                .AddEntityFrameworkStores<DihlDbContext>();
+            services.AddAuthentication()
+                .AddJwtBearer(c =>
+                {
+                    c.RequireHttpsMetadata = true;
+                    c.SaveToken = true;
+                    c.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = Configuration["Tokens:Issuer"],
+                        ValidAudience = Configuration["Tokens:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    };
+                });
+
 
             services.AddSwaggerGen(c =>
             {
