@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DIHL.Application.Identity.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DIHL.Application.WebApi.Identity
+namespace DIHL.Application.Identity
 {
-    public class ApplicationIdentityContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
-        public ApplicationIdentityContext(DbContextOptions<ApplicationIdentityContext> options)
+        public ApplicationIdentityDbContext(DbContextOptions<ApplicationIdentityDbContext> options)
             : base(options)
         {
         }

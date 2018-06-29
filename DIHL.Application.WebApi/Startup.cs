@@ -1,8 +1,9 @@
 using System;
 using System.Text;
 using Autofac;
+using DIHL.Application.Identity;
+using DIHL.Application.Identity.Models;
 using DIHL.Application.WebApi.Config;
-using DIHL.Application.WebApi.Identity;
 using DIHL.Repository.Sql.Database;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Builder;
@@ -48,14 +49,15 @@ namespace DIHL.Application.WebApi
             });
 
             //Add Identity specific context
-            services.AddDbContext<ApplicationIdentityContext>(options =>
+            services.AddDbContext<ApplicationIdentityDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
             });
 
             //https://github.com/aspnet/Identity/issues/1364
+            //Need to inherit IdentityUser/IdentityRole to avoid exception when Id is customised from string
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationIdentityContext>();
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
             services.AddAuthentication()
                 .AddJwtBearer(c =>
                 {
