@@ -1,9 +1,7 @@
-using DIHL.Application.Core.Interfaces;
 using DIHL.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -11,6 +9,7 @@ using System.Threading.Tasks;
 using DIHL.Application.Identity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -37,6 +36,7 @@ namespace DIHL.Application.WebApi.Controllers
         {
             _log.Information($"Token requested for {authenticationRequest.UserName}");
 
+            var users = await _userManager.Users.ToListAsync();
             var user = await _userManager.FindByEmailAsync(authenticationRequest.UserName);
             
             if (user != null)
@@ -48,6 +48,7 @@ namespace DIHL.Application.WebApi.Controllers
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.UserName)
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
@@ -64,20 +65,6 @@ namespace DIHL.Application.WebApi.Controllers
             }
 
             return BadRequest("Could not create token");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> CreateLogin()
-        {
-            var user = new ApplicationUser
-            {
-                UserName = "brendon@coombes.nz",
-            };
-
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, "P@ssword1");
-            var idetntiyResult = await _userManager.CreateAsync(user);
-
-            return Ok("User Created");
         }
     }
 }
