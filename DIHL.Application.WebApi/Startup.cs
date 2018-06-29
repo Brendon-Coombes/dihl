@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Autofac;
 using DIHL.Application.WebApi.Config;
+using DIHL.Application.WebApi.Identity;
 using DIHL.Repository.Sql.Database;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Builder;
@@ -40,15 +41,21 @@ namespace DIHL.Application.WebApi
 
             services.Configure<SerilogConfig>(Configuration.GetSection("SerilogConfig"));
 
-           
+            //Add DIHL DB Contect
             services.AddDbContext<DihlDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
             });
 
+            //Add Identity specific context
+            services.AddDbContext<ApplicationIdentityContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DIHLDbConnection"));
+            });
+
             //https://github.com/aspnet/Identity/issues/1364
-            services.AddIdentity<IdentityUser<Guid>, IdentityRole>()
-                .AddEntityFrameworkStores<DihlDbContext>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationIdentityContext>();
             services.AddAuthentication()
                 .AddJwtBearer(c =>
                 {

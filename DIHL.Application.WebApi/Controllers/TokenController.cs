@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DIHL.Application.WebApi.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -20,10 +21,10 @@ namespace DIHL.Application.WebApi.Controllers
     public class TokenController : BaseApiController
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<IdentityUser<Guid>> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger _log = Log.ForContext<TokenController>();
 
-        public TokenController(IConfiguration configuration, UserManager<IdentityUser<Guid>> userManager)
+        public TokenController(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
@@ -63,6 +64,20 @@ namespace DIHL.Application.WebApi.Controllers
             }
 
             return BadRequest("Could not create token");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateLogin()
+        {
+            var user = new ApplicationUser
+            {
+                UserName = "brendon@coombes.nz",
+            };
+
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, "P@ssword1");
+            var idetntiyResult = await _userManager.CreateAsync(user);
+
+            return Ok("User Created");
         }
     }
 }
