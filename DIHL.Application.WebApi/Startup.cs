@@ -6,6 +6,7 @@ using DIHL.Application.Identity.Models;
 using DIHL.Application.WebApi.Config;
 using DIHL.Repository.Sql.Database;
 using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -38,8 +39,6 @@ namespace DIHL.Application.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
             services.Configure<SerilogConfig>(Configuration.GetSection("SerilogConfig"));
 
             //Add DIHL DB Contect
@@ -56,26 +55,32 @@ namespace DIHL.Application.WebApi
 
             //https://github.com/aspnet/Identity/issues/1364
             //Need to inherit IdentityUser/IdentityRole to avoid exception when Id is customised from string
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentityCore<ApplicationUser>(options => { });
+            new IdentityBuilder(typeof(ApplicationUser), typeof(ApplicationRole), services)
+                .AddRoleManager<RoleManager<ApplicationRole>>()
+                .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
-            services.AddAuthentication()
-                .AddJwtBearer(c =>
-                {
-                    c.RequireHttpsMetadata = true;
-                    c.SaveToken = true;
-                    c.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = Configuration["Tokens:Issuer"],
-                        ValidAudience = Configuration["Tokens:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
-                    };
-                });
-
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "DIHL Stats API", Version = "v1" });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                });
+            services.AddMvc();          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,13 +97,10 @@ namespace DIHL.Application.WebApi
 
             if (env.IsDevelopment())
             {
-                app.UseCors(builder =>
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseMvc();
         }
 

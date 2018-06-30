@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using DIHL.Application.Identity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -29,14 +28,17 @@ namespace DIHL.Application.WebApi.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Logs in a user and provides them with a token to use the authorized endpoints
+        /// </summary>
+        /// <param name="authenticationRequest"></param>
+        /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
-        //[ProducesResponseType(typeof(object), 200)]
+        [AllowAnonymous]        
         public async Task<IActionResult> Login([FromBody] AuthenticationRequestDTO authenticationRequest)
         {
             _log.Information($"Token requested for {authenticationRequest.UserName}");
 
-            var users = await _userManager.Users.ToListAsync();
             var user = await _userManager.FindByEmailAsync(authenticationRequest.UserName);
             
             if (user != null)
@@ -48,14 +50,15 @@ namespace DIHL.Application.WebApi.Controllers
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, user.UserName)
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email)
                     };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    var token = new JwtSecurityToken(_configuration["Tokens:Issuer"],
-                        _configuration["Tokens:Issuer"],
+                    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                        _configuration["Jwt:Issuer"],
                         claims,
                         expires: DateTime.Now.AddMinutes(30),
                         signingCredentials: credentials);
