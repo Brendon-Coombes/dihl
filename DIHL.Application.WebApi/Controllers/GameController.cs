@@ -5,11 +5,13 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DIHL.Application.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Game")]
+    [Authorize]
     public class GameController : BaseApiController
     {
         private readonly IGameService _gameService;

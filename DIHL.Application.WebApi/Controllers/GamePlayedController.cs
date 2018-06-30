@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DIHL.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DIHL.Application.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/GamePlayed")]
+    [Authorize]
     public class GamePlayedController : BaseApiController
     {
         private readonly IGamePlayedService _gameService;

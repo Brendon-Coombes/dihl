@@ -13,12 +13,12 @@
 
 ### To add a migration
 `
-dotnet ef --startup-project ..\DIHL.Repository.Sql.Startup\ migrations add "InitialMigration"
+dotnet ef --startup-project ..\DIHL.Application.Identity.Startup\ migrations add "InitialMigration"
 `
 
 ### To update the database
 `
-dotnet ef --startup-project ..\DIHL.Repository.Sql.Startup\ database update
+dotnet ef --startup-project ..\DIHL.Application.Identity.Startup\ database update
 `
 
 ### To remove a migration
@@ -26,19 +26,19 @@ dotnet ef --startup-project ..\DIHL.Repository.Sql.Startup\ database update
 First you must update the database to the migration you'd like to roll back to:
 
 `
- dotnet ef --startup-project ..\DIHL.Repository.Sql.Startup\ database update <previous-migration>
+ dotnet ef --startup-project ..\DIHL.Application.Identity.Startup\ database update <previous-migration>
 `
 
 Then remove the most recent migration:
 
 `
-dotnet ef --startup-project ..\DIHL.Repository.Sql.Startup\ migrations remove
+dotnet ef --startup-project ..\DIHL.Application.Identity.Startup\ migrations remove
 `
 
 ### To generate an idempotent script for updating databases. 
 
 `
-dotnet ef --startup-project ..\DIHL.Repository.Sql.Startup\ migrations script 0  -i -o "update-database.sql"
+dotnet ef --startup-project ..\DIHL.Application.Identity.Startup\ migrations script 0  -i -o "update-database.sql"
 `
 
 > Replace "0" with the migration name from the destination database. 0 represents the initial migration.  
