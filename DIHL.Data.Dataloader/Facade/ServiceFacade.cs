@@ -43,7 +43,7 @@ namespace DIHL.Data.Dataloader.Facade
 
             Console.WriteLine("Retrieving Seaons...");
             var seasons = await _seasonService.List();
-            var season = seasons.First(s => s.LeagueId == league.Id && s.Year == 2017);
+            var season = seasons.First(s => s.LeagueId == league.Id && s.Year == 2018);
 
             Console.WriteLine("Retrieving Teams...");
             var teams = await _teamService.List();
@@ -271,6 +271,7 @@ namespace DIHL.Data.Dataloader.Facade
 
         private async Task ParsePointPlayerString(string pointScorers, GameSkaterStatisticDTO statistic)
         {
+            //TODO This string has changed, fix it up
             //Remove brackets from assist players
             if (pointScorers.StartsWith("("))
             {

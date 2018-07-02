@@ -81,6 +81,7 @@ namespace DIHL.Data.Dataloader.Page
 
         private void PopulateGameGoals(GamePageInformation gameInfo)
         {
+            //TODO: The website has changed, this may need to change to reflect that
             var tableRows =_webDriver.FindElements(By.CssSelector("#maincontent_gvBoxScoreGoals > tbody > tr"));
             int period = 0;
 

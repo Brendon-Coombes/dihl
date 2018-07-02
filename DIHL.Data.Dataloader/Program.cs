@@ -41,7 +41,7 @@ namespace DIHL.Data.Dataloader
             IServiceFacade serviceFacade = serviceProvider.GetService<IServiceFacade>();
             IWebDriver driver = new OpenQA.Selenium.Chrome.ChromeDriver("..\\..\\..\\Tools");
 
-            ScheduleAndScoresPage page = new ScheduleAndScoresPage(driver, Season.WinterDIHL2017);
+            ScheduleAndScoresPage page = new ScheduleAndScoresPage(driver, Season.WinterDIHL2018);
             page.Navigate();
 
             Console.WriteLine("Retrieving Game Ids...");
