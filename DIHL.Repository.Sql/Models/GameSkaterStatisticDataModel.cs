@@ -66,7 +66,5 @@ namespace DIHL.Repository.Sql.Models
         public PlayerDataModel PrimaryAssist { get; set; }
         [ForeignKey("SecondaryAssistPlayerId")]
         public PlayerDataModel SecondaryAssist { get; set; }
-
-        //TODO - shootout consideration needed here?
     }
 }
