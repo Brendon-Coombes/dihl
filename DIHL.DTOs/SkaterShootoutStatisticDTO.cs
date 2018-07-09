@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DIHL.Repository.Sql.Models
+namespace DIHL.DTOs
 {
-    public class GoalieShootoutStatisticDataModel : IDataModel
+    public class SkaterShootoutStatisticDTO
     {
         /// <summary>
         /// The unique identifier for this skater shootout statistic
@@ -12,7 +14,7 @@ namespace DIHL.Repository.Sql.Models
         /// <summary>
         /// The game shooutout statistic Id
         /// </summary>
-        public Guid GameShootoutStatisticId { get; set; } 
+        public Guid GameShootoutStatisticId { get; set; }
 
         /// <summary>
         /// The team Id
@@ -25,27 +27,18 @@ namespace DIHL.Repository.Sql.Models
         public Guid? PlayerId { get; set; }
 
         /// <summary>
-        /// The number of shots the goalie took in the shootout
+        /// The shot number for this team
         /// </summary>
-        public int ShotsAgainst { get; set; }
+        public int ShotNumber { get; set; }
 
         /// <summary>
-        /// The goals allowed by the goalie in the shootout
+        /// Whether or not the shot was successful
         /// </summary>
-        public int GoalsAllowed { get; set; }
-
-        /// <summary>
-        /// Whether or not the goalie won the shootout
-        /// </summary>
-        public bool WonShootout { get; set; }
+        public bool Successful { get; set; }
 
         /// <summary>
         /// The statistic created on date
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
-
-        public TeamDataModel Team { get; set; }
-        public GameShootoutStatisticDataModel ShootoutStatistic { get; set; }
-        public PlayerDataModel Player { get; set; }
     }
 }

@@ -33,5 +33,14 @@ namespace DIHL.Repository.Sql.Models
         /// Whether or not the shot was successful
         /// </summary>
         public bool Successful { get; set; }
+
+        /// <summary>
+        /// The statistic created on date
+        /// </summary>
+        public DateTime CreatedOnUtc { get; set; }
+
+        public TeamDataModel Team { get; set; }
+        public GameShootoutStatisticDataModel ShootoutStatistic { get; set; }
+        public PlayerDataModel Player { get; set; }
     }
 }

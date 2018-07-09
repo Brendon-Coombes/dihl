@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DIHL.Repository.Sql.Models
+namespace DIHL.DTOs
 {
-    public class GameShootoutStatisticDataModel : IDataModel
+    public class GameShootoutStatisticDTO
     {
         /// <summary>
         /// The unique identifier for this game shootout statistic
@@ -20,8 +20,14 @@ namespace DIHL.Repository.Sql.Models
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
 
-        public GameDataModel Game { get; set; }
-        public List<SkaterShootoutStatisticDataModel> SkaterShootoutStatistics { get; set; }
-        public List<GoalieShootoutStatisticDataModel> GoalieShootoutStatistics { get; set; }
+        /// <summary>
+        /// The goalie statistics related to this shootout
+        /// </summary>
+        public IList<GoalieShootoutStatisticDTO> GoalieStatistics { get; set; }
+
+        /// <summary>
+        /// The skater statistics related to this shootout
+        /// </summary>
+        public IList<SkaterShootoutStatisticDTO> SkaterStatistics { get; set; }
     }
 }

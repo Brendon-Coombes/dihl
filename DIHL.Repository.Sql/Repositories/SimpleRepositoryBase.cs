@@ -114,7 +114,7 @@ namespace DIHL.Repository.Sql.Repositories
         /// <param name="domainModel">The entity dto.</param>
         /// <param name="dataModel">The data model.</param>
         /// <returns></returns>
-        private async Task<T> UpsertAndSave(T domainModel, TU dataModel)
+        protected async Task<T> UpsertAndSave(T domainModel, TU dataModel)
         {
             return await this.Handler.Execute(this.Logger, async () =>
             {
