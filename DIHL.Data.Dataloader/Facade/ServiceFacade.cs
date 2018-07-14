@@ -277,7 +277,11 @@ namespace DIHL.Data.Dataloader.Facade
             var goalScorerAssistsSplit = pointScorers.Split("\r\n");
             var scorer = goalScorerAssistsSplit[0];
 
-            var goalScorer = await GetOrCreatePlayer(scorer.Remove(scorer.IndexOf("("), 3).Trim());
+            var pointStart = scorer.IndexOf("(");
+            var pointEnd = scorer.IndexOf(")");
+            var charsToRemove = (pointEnd + 1) - pointStart;
+
+            var goalScorer = await GetOrCreatePlayer(scorer.Remove(pointStart, charsToRemove).Trim());
 
             if (goalScorerAssistsSplit.Length > 1)
             {
