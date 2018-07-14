@@ -21,7 +21,8 @@ namespace DIHL.Repository.Sql.Database
         public DbSet<PlayerDataModel> Players { get; set; }
         public DbSet<PlayerTeamDataModel> PlayerTeams { get; set; }
         public DbSet<TeamDataModel> Teams { get; set; }
-		public DbSet<SettingDataModel> Settings { get; set; }
+        public DbSet<GameShootoutStatisticDataModel> GameShootoutStatistics { get; set; }
+        public DbSet<SettingDataModel> Settings { get; set; }
         
         public DihlDbContext(DbContextOptions<DihlDbContext> options) : base(options)
         {
@@ -105,6 +106,36 @@ namespace DIHL.Repository.Sql.Database
                 .HasOne(g => g.Team)
                 .WithMany(t => t.SkaterStatistics)
                 .HasForeignKey(g => g.TeamId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GameShootoutStatisticDataModel>()
+                .ToTable("GameShootoutStatistics")
+                .HasKey(i => i.Id);
+
+            modelBuilder.Entity<GameShootoutStatisticDataModel>()
+                .HasOne(g => g.Game)
+                .WithMany(t => t.ShootoutStatistics)
+                .HasForeignKey(g => g.GameId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SkaterShootoutStatisticDataModel>()
+                .ToTable("SkaterShootoutStatistics")
+                .HasKey(i => i.Id);
+
+            modelBuilder.Entity<SkaterShootoutStatisticDataModel>()
+                .HasOne(g => g.ShootoutStatistic)
+                .WithMany(t => t.SkaterShootoutStatistics)
+                .HasForeignKey(g => g.GameShootoutStatisticId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GoalieShootoutStatisticDataModel>()
+                .ToTable("GoalieShootoutStatistics")
+                .HasKey(i => i.Id);
+
+            modelBuilder.Entity<GoalieShootoutStatisticDataModel>()
+                .HasOne(g => g.ShootoutStatistic)
+                .WithMany(t => t.GoalieShootoutStatistics)
+                .HasForeignKey(g => g.GameShootoutStatisticId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<SettingDataModel>()

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace DIHL.Data.Dataloader
 {
@@ -39,16 +40,17 @@ namespace DIHL.Data.Dataloader
             var serviceProvider = new AutofacServiceProvider(applicationContainer);
 
             IServiceFacade serviceFacade = serviceProvider.GetService<IServiceFacade>();
-            IWebDriver driver = new OpenQA.Selenium.Chrome.ChromeDriver("..\\..\\..\\Tools");
+            //TODO: Add this to configuration
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.AddArguments(@"load-extension=C:\Users\BrendonC\AppData\Local\Google\Chrome\User Data\Default\Extensions\gighmmpiobklfepjocnamgkkbiglidom\3.31.2_0");
+            IWebDriver driver = new OpenQA.Selenium.Chrome.ChromeDriver("..\\..\\..\\Tools", chromeOptions);
 
-            ScheduleAndScoresPage page = new ScheduleAndScoresPage(driver, Season.WinterDIHL2017);
+            ScheduleAndScoresPage page = new ScheduleAndScoresPage(driver, Season.WinterDIHL2018);
             page.Navigate();
 
             Console.WriteLine("Retrieving Game Ids...");
             var gameIds = page.GetGameIds();
-
-            gameIds = gameIds.ToList();
-
+            
             foreach (var gameId in gameIds)
             {
                 GamePage gamePage = new GamePage(driver, gameId);

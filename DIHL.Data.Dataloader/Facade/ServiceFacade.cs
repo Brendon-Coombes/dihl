@@ -43,7 +43,7 @@ namespace DIHL.Data.Dataloader.Facade
 
             Console.WriteLine("Retrieving Seaons...");
             var seasons = await _seasonService.List();
-            var season = seasons.First(s => s.LeagueId == league.Id && s.Year == 2017);
+            var season = seasons.First(s => s.LeagueId == league.Id && s.Year == 2018);
 
             Console.WriteLine("Retrieving Teams...");
             var teams = await _teamService.List();
@@ -271,39 +271,34 @@ namespace DIHL.Data.Dataloader.Facade
 
         private async Task ParsePointPlayerString(string pointScorers, GameSkaterStatisticDTO statistic)
         {
-            //Remove brackets from assist players
-            if (pointScorers.StartsWith("("))
-            {
-                pointScorers = pointScorers.Replace("(", "").Replace(")", "");
-            }
-            else
-            {
-                pointScorers = pointScorers.Replace("(", ",").Replace(")", "");
-            }
-
-            //Split the goal scorer and primary assist players up.
-            var splitScorers = pointScorers.Split(",");
-            var grouped = splitScorers
-                .Select((a, i) => new { Scorer = a, Index = i })
-                .GroupBy(p => p.Index / 2);
-
-            List<string> splitScorersInOrder = grouped
-                .Select(g => string.Join(",", g.Select(p => p.Scorer.Trim())))
-                .ToList();
-
-            var goalScorer = await GetOrCreatePlayer(splitScorersInOrder[0]);
-
             PlayerDTO primaryAssist = null;
             PlayerDTO secondaryAssist = null;
 
-            if (splitScorersInOrder.Count > 1)
-            {
-                primaryAssist = await GetOrCreatePlayer(splitScorersInOrder[1]);
-            }
+            var goalScorerAssistsSplit = pointScorers.Split("\r\n");
+            var scorer = goalScorerAssistsSplit[0];
 
-            if (splitScorersInOrder.Count == 3)
+            var pointStart = scorer.IndexOf("(");
+            var pointEnd = scorer.IndexOf(")");
+            var charsToRemove = (pointEnd + 1) - pointStart;
+
+            var goalScorer = await GetOrCreatePlayer(scorer.Remove(pointStart, charsToRemove).Trim());
+
+            if (goalScorerAssistsSplit.Length > 1)
             {
-                secondaryAssist = await GetOrCreatePlayer(splitScorersInOrder[2]);
+                //Get assist players.
+                var assists = goalScorerAssistsSplit[1].Replace("Asst :", string.Empty);
+
+                //Check if there is a secondary assist
+                if (assists.Contains("/"))
+                {
+                    var splitAssists = assists.Split("/");
+                    primaryAssist = await GetOrCreatePlayer(splitAssists[0].Remove(splitAssists[0].IndexOf("("), 3).Trim());
+                    secondaryAssist = await GetOrCreatePlayer(splitAssists[1].Remove(splitAssists[1].IndexOf("("), 3).Trim());
+                }
+                else
+                {
+                    primaryAssist = await GetOrCreatePlayer(assists.Remove(assists.IndexOf("("), 3).Trim());
+                }
             }
 
             //Update the stats with the player information

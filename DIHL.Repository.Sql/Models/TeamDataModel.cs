@@ -44,6 +44,7 @@ namespace DIHL.Repository.Sql.Models
         public List<GameSkaterStatisticDataModel> SkaterStatistics { get; set; }
         public List<GameGoalieStatisticDataModel> GoalieStatistics { get; set; }
         public List<GamePlayedDataModel> GamesPlayed { get; set; }
+        public List<GameShootoutStatisticDataModel> ShootoutStatistics { get; set; }
         public List<SeasonDataModel> Seasons { get; set; }
 
     }

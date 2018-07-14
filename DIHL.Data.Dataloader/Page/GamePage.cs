@@ -42,6 +42,7 @@ namespace DIHL.Data.Dataloader.Page
             PopulateGameInformation(gameInfo);
             Console.WriteLine("Gathering game goals...");
             PopulateGameGoals(gameInfo);
+            //TODO: Check for shootout goals
             Console.WriteLine("Gathering game penalties...");
             PopulateGamePenalties(gameInfo);
             Console.WriteLine("Gathering game rosters...");
@@ -54,10 +55,13 @@ namespace DIHL.Data.Dataloader.Page
 
         private void PopulateGameInformation(GamePageInformation gameInfo)
         {
-            string headerSelector = "#form1 > div:nth-child(9) > div.mso-section-blue > table > tbody > tr > td:nth-child({0}) > h4";
+            string headerSelector = "#form1 > div:nth-child(9) > div.mso-section-blue.mso-big.mso-bold > div";
 
-            string timeString = _webDriver.FindElement(By.CssSelector(string.Format(headerSelector, "1"))).Text;
-            string location = _webDriver.FindElement(By.CssSelector(string.Format(headerSelector, "2"))).Text;
+            string headerString = _webDriver.FindElement(By.CssSelector(string.Format(headerSelector, "1"))).Text;
+            string[] splitHeader = headerString.Split("\r\n");
+            string timeString = splitHeader[0];
+            string location = splitHeader[1];
+            
 
             if (timeString.StartsWith("0"))
             {
@@ -69,11 +73,11 @@ namespace DIHL.Data.Dataloader.Page
             gameInfo.Date = gameDate.Date;
             gameInfo.Location = location;
 
-            gameInfo.AwayTeam = _webDriver.FindElement(By.CssSelector("#maincontent_divTeamAway > h4")).Text;
-            gameInfo.HomeTeam = _webDriver.FindElement(By.CssSelector("#maincontent_divTeamHome > h4")).Text;
+            gameInfo.AwayTeam = _webDriver.FindElement(By.CssSelector("#maincontent_divTeamAway > span.mso-big.mso-bold")).Text;
+            gameInfo.HomeTeam = _webDriver.FindElement(By.CssSelector("#maincontent_divTeamHome > strong > span")).Text;
 
-            string awayScore = _webDriver.FindElement(By.CssSelector("#form1 > div:nth-child(9) > div:nth-child(2) > div:nth-child(2) > div > div.col-xs-4.col-sm-5.nopadding.text-right > h2")).Text;
-            string homeScore = _webDriver.FindElement(By.CssSelector("#form1 > div:nth-child(9) > div:nth-child(2) > div:nth-child(2) > div > div.col-xs-4.col-sm-5.nopadding.text-left > h2")).Text;
+            string awayScore = _webDriver.FindElement(By.CssSelector("#form1 > div:nth-child(9) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div.col-xs-5.col-sm-5.text-right")).Text;
+            string homeScore = _webDriver.FindElement(By.CssSelector("#form1 > div:nth-child(9) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div.col-xs-5.col-sm-5.text-left")).Text;
 
             gameInfo.AwayScore = int.Parse(awayScore);
             gameInfo.HomeScore = int.Parse(homeScore);
@@ -81,6 +85,7 @@ namespace DIHL.Data.Dataloader.Page
 
         private void PopulateGameGoals(GamePageInformation gameInfo)
         {
+            //TODO: The website has changed, this may need to change to reflect that
             var tableRows =_webDriver.FindElements(By.CssSelector("#maincontent_gvBoxScoreGoals > tbody > tr"));
             int period = 0;
 
@@ -153,7 +158,7 @@ namespace DIHL.Data.Dataloader.Page
                             TeamShortCode = teamShortCode,
                             Player = player,
                             PenaltyType = penaltyType,
-                            Length = TimeSpan.Parse(length)
+                            Length = !string.IsNullOrEmpty(length) ? TimeSpan.Parse(length) : TimeSpan.FromMinutes(0)
                         };
 
                         gameInfo.GamePenalties.Add(penalty);
