@@ -23,7 +23,6 @@ namespace DIHL.Application.WebApi.Controllers
         [ProducesResponseType(typeof(WhoAmIDTO), 200)]
         public async Task<IActionResult> WhoAmI()
         {
-            //TODO: This doesn't work -- find out how to get logged in user.
             _log.Information($"WhoAmI requested");
 
             ClaimsPrincipal currentUser = this.User;

@@ -40,10 +40,11 @@ namespace DIHL.Application.WebApi.Controllers
             _log.Information($"Token requested for {authenticationRequest.UserName}");
 
             var user = await _userManager.FindByEmailAsync(authenticationRequest.UserName);
-            
+
             if (user != null)
             {
                 bool checkPassword = await _userManager.CheckPasswordAsync(user, authenticationRequest.Password);
+
                 if (checkPassword)
                 {
                     var claims = new[]
